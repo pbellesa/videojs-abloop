@@ -3,6 +3,14 @@ This is a plugin for video.js.
 It provides an A/B loop function, allowing a section of a video to be looped over repeatedly.
 
 The settings can be changed dynamically, either programmatically or via a user interface.
+Initialize
+==========
+```
+import videojs from 'video.js';
+import abLoopPlugin from 'abLoopPlugin';
+
+videojs.plugin('abLoopPlugin', abLoopPlugin);
+```
 
 Interface
 =========
@@ -15,7 +23,7 @@ Buttons are created on the control bar to set start and end times for the loop, 
 ![GUI screeshot](/images/interfaceScreenshot.png "GUI screeshot")
 
 You can right click on the start and end buttons to skip to the start and end positions. If you right click on the loop
-button you can enable pausing before or after looping.  
+button you can enable pausing before or after looping.
 
 
 
@@ -44,12 +52,12 @@ Assuming ```video``` references a videojs player instance:
 * Look at ```video.abLoopPlugin``` for functions to call to control the loop.
 * The API methods can be chained together like this: ```video.abLoopPlugin.setStart().setEnd(8).goToStart().enable();```
 * ```setStart``` and ```setEnd``` will set the start and end positions to the current video position if called with no parameter.
-* Options can be set  with ```video.abLoopPlugin.setOptions({'optionname':value})``` 
+* Options can be set  with ```video.abLoopPlugin.setOptions({'optionname':value})```
 * Options can be read with ```video.abLoopPlugin.getOptions()``` or to return some options ```video.abLoopPlugin.getOptions(["start","end"])```.
   * You could save settings by writing this as JSON or whatever (see in samples folder for a crude example).
 * An onLoop callback can be set at ```video.abLoopPlugin.onLoopCallBack``` or in the setup options (see example below).
 * An onOptionsChange callback can be set at ```video.abLoopPlugin.onOptionsChange``` or in the setup options. This is useful if you implement your own interface.
-* You can also get and apply URL fragments to represent the looping section. E.g. ```#t=10,15```. 
+* You can also get and apply URL fragments to represent the looping section. E.g. ```#t=10,15```.
 
 API commands
 ------------
@@ -59,15 +67,15 @@ setOptions(optionsObject): e.g. setOptions({"start":40,"end":45"}). Options not 
 getOptions(optionsObject?): e.g. getOptions(["start","end"]). Call without an argument to get them all.
 goToStart(): set player currentTime to start time
 goToEnd():
-setStart(startTime): e.g. startTime(30), startTime("0:34:23"). Call startTime() to set the startTime to the player's currentTime 
-setEnd(endTime):  
-adjustStart(adjustmentInSec): e.g. adjustStart(-5). adjustStart("1m30s") or adjustStart("1:20:30") also work 
-adjustEnd(adjustmentInSec): 
+setStart(startTime): e.g. startTime(30), startTime("0:34:23"). Call startTime() to set the startTime to the player's currentTime
+setEnd(endTime):
+adjustStart(adjustmentInSec): e.g. adjustStart(-5). adjustStart("1m30s") or adjustStart("1:20:30") also work
+adjustEnd(adjustmentInSec):
 enable(): enable the plugin.
-disable(): 
+disable():
 toggle(): change enabled status
-togglePauseAfterLooping(): 
-togglePauseBeforeLooping(): 
+togglePauseAfterLooping():
+togglePauseBeforeLooping():
 cyclePauseOnLooping(): cycle between four different compinations of settings for pausing on looping
 validateOptions(): set options to valid values if they are not already. This is called every time the loop condition is checked anyway, but you might want to use it manually if setting options while the player is paused or the plugin disabled
 resetToInitialOptions: reset options to the ones provided on setup
@@ -76,7 +84,7 @@ player: reference to parent player object. e.g. video.abLoopPlugin.enable().play
 version: version number
 getAbsoluteUrl()
 getUrl():
-getUrlFragment() 
+getUrlFragment()
 applyUrl() : e.g. applyUrlFragment('http://path/to/video.mp4#t=12,13')
 applyUrlFragment() : e.g. applyUrlFragment('#t=12,13'), applyUrlFragment('http://path/to/video/is/ignored/only/fragment/applied.mp4#t=12,13')
 loopRequired(): returns true or false depending on whether the loop would be activated in the current state.
@@ -90,7 +98,7 @@ You could use the existing [hotkeys plugin](https://github.com/ctd1500/videojs-h
 Sample usage
 ============
 
-See the samples folder for working examples. 
+See the samples folder for working examples.
 
 Include the script:
 
@@ -124,7 +132,7 @@ var video = videojs("videoid",{
 
 video.play();
 
-setTimeout(function() { 
+setTimeout(function() {
 	console.log("setting new start and end...");
 	video.abLoopPlugin.setStart().setEnd(8).enable();
 } , 2000);
@@ -132,7 +140,7 @@ setTimeout(function() {
 video.abLoopPlugin.onLoopCallBack = function(api,player){
 	var opts = api.getOptions();
 	console.log("Looping back to %s sec on %s",opts.start, player.currentSrc() );
-	api.setOptions({'pauseAfterLoop': true}); 
+	api.setOptions({'pauseAfterLoop': true});
 	api.setStart(5);
 	api.setEnd(15);
 };
